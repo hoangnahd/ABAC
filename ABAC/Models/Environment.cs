@@ -2,8 +2,8 @@
 {
     public class Environment
     {
-        public string Location { get; set; }
-        public string Time { get; set; }
+        public string Location { get; set; } = string.Empty;
+        public string Time { get; set; } = string.Empty;
         // Add more attributes as needed
     }
 }

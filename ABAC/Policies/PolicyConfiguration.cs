@@ -1,4 +1,7 @@
-﻿namespace ABAC.Policies
+﻿using System.Collections.Generic;
+using ABAC.Models;
+
+namespace ABAC.Policies
 {
     public static class PolicyConfiguration
     {
@@ -6,14 +9,33 @@
         {
             return new List<Policy>
             {
+                // Define policies for HR_Manager role
                 new Policy
                 {
                     Action = "read",
-                    ResourceType = "report",
-                    Conditions = (user, resource, env) =>
-                        user.Role == "manager" && user.Department == "sales" && env.Time == "work_hours"
-                },
-                // Add more policies as needed
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        var userRoles = context.UserRole
+                            .Where(ur => ur.UserId == user.Id)
+                            .Select(ur => ur.Role)
+                            .ToList();
+
+                        foreach (var role in userRoles)
+                        {
+                            var roleResources = context.RoleResources
+                                .Where(rr => rr.RoleId == role.Id && rr.ResourceId == resource.Id)
+                                .ToList();
+
+                            if (roleResources.Any())
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+                
             };
         }
     }
