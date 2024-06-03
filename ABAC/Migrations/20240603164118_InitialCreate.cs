@@ -65,7 +65,8 @@ namespace ABAC.Migrations
                     Type = table.Column<string>(type: "TEXT", nullable: false),
                     Sensitivity = table.Column<string>(type: "TEXT", nullable: false),
                     Department = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false)
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Owner = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,22 +244,22 @@ namespace ABAC.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Department", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "sysAdmin" },
                 values: new object[,]
                 {
-                    { 1, 0, "705fddbb-22b4-464f-9a0f-c42fea7848d1", "IT", "admin@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEDBPVPTVSGmHGsrg6Q/+Npc9YZlvn5ov+w/1DYiIK6GZwaKSRkA3HxtdU/uKj2tI/w==", "1234567890", true, null, false, "admin", false },
-                    { 2, 0, "fbf95702-396c-4ae9-b028-9bbd4b059a97", "HR", "john@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEC/ybvD0SJihmT11Pb8xvHQNR82+nR7BGCIZZzvDqshTXQ5bx9CDd8jrDwuGkq0OmQ==", "1234567890", true, null, false, "quocanh", false },
-                    { 4, 0, "f284ca95-b484-4546-93b8-917ecb705091", "", "hoanganh@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEK6scobl+p9VV1vT52VnjgJBJvZ2EsGGq3cNFb1/02n7LMe1T40BY+uS84G6bUYtjw==", "1234567890", true, null, false, "hoanganh", true }
+                    { 1, 0, "c7ee2ae0-b40c-49a7-b199-1fe6ca6e8d28", "IT", "admin@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEM9zpaqXK0GGFnW8A19nanIgGSukuT4EII0h2ICGgPz0Palru1n5Gq/uHHXDeV+doQ==", "1234567890", true, null, false, "admin", false },
+                    { 2, 0, "1023394b-b32b-4ca7-9577-b95ed169a838", "HR", "john@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEIc/lUNwHhYDXcuDh+3EWbWvtHNWLKuD5L3RmFpGVf1K6ztuoIAaddmwBt4Vu4Lvmg==", "1234567890", true, null, false, "quocanh", false },
+                    { 4, 0, "42b19f81-9a79-46eb-81c8-7de53ed192ae", "", "hoanganh@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAENWZtQXqnkutR6YmY2ldjL5QeSH2zaBIPNJpJ1KQ4PEmgbAp14xmwDL2wjLR+NRAKQ==", "1234567890", true, null, false, "hoanganh", true }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resources",
-                columns: new[] { "Id", "Content", "Department", "Sensitivity", "Type" },
+                columns: new[] { "Id", "Content", "Department", "Owner", "Sensitivity", "Type" },
                 values: new object[,]
                 {
-                    { 101, "The data type for this entity is a Document with High sensitivity department IT", "IT", "High", "Document" },
-                    { 102, "The data type for this entity is a Server with Medium sensitivity department IT", "IT", "Medium", "Server" },
-                    { 103, "The data type for this entity is a Report with low sensitivity department Finance", "Finance", "Low", "Report" },
-                    { 104, "The data type for this entity is a Network with High sensitivity department Finance", "Finance", "High", "Network" },
-                    { 105, "The data type for this entity is a Document with High sensitivity department HR", "HR", "High", "Document" },
-                    { 106, "The data type for this entity is a Document with Medium sensitivity department HR", "HR", "Medium", "Document" }
+                    { 101, "The data type for this entity is a Document with High sensitivity department IT", "IT", "[1]", "High", "Document" },
+                    { 102, "The data type for this entity is a Server with Medium sensitivity department IT", "IT", "[1]", "Medium", "Server" },
+                    { 103, "The data type for this entity is a Report with low sensitivity department Finance", "Finance", "[3]", "Low", "Report" },
+                    { 104, "The data type for this entity is a Network with High sensitivity department Finance", "Finance", "[3,4]", "High", "Network" },
+                    { 105, "The data type for this entity is a Document with High sensitivity department HR", "HR", "[2]", "High", "Document" },
+                    { 106, "The data type for this entity is a Document with Medium sensitivity department HR", "HR", "[2,4]", "Medium", "Document" }
                 });
 
             migrationBuilder.InsertData(

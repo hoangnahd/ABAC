@@ -24,7 +24,7 @@ namespace ABAC.Policies
                         foreach (var role in userRoles)
                         {
                             var roleResources = context.RoleResources
-                                .Where(rr => rr.RoleId == role.Id && rr.ResourceId == resource.Id)
+                                .Where(rr => rr.RoleId == role.Id && resource != null && rr.ResourceId == resource.Id)
                                 .ToList();
 
                             if (roleResources.Any())
@@ -41,7 +41,7 @@ namespace ABAC.Policies
                     ResourceType = "Document",
                     Conditions = (user, resource, context) =>
                     {
-                        return resource.Owner.Contains(user.Id);
+                        return resource != null && resource.Owner.Contains(user.Id);
                     }
                 },
                 new Policy
@@ -50,7 +50,7 @@ namespace ABAC.Policies
                     ResourceType = "Document",
                     Conditions = (user, resource, context) =>
                     {
-                        return resource.Owner.Contains(user.Id);
+                        return resource != null && resource.Owner.Contains(user.Id);
                     }
                 },
                 new Policy
@@ -59,7 +59,7 @@ namespace ABAC.Policies
                     ResourceType = "Document",
                     Conditions = (user, resource, context) =>
                     {
-                        return user.Department == resource.Department && resource.Sensitivity == "Medium";
+                        return resource != null && user.Department == resource.Department &&  resource.Sensitivity == "Medium";
                     }
                 },
                 new Policy
@@ -68,7 +68,7 @@ namespace ABAC.Policies
                     ResourceType = "Document",
                     Conditions = (user, resource, context) =>
                     {
-                        return resource.Sensitivity == "Low";
+                        return  resource != null &&  resource.Sensitivity == "Low";
                     }
                 },
                 new Policy

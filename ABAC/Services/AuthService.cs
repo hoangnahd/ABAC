@@ -37,8 +37,16 @@ namespace ABAC.Services
 
             return new AuthenticationResult { Success = false, Message = "Invalid username or password" };
         }
-        public async Task<bool> AddUserAsync(UserRequest userRequest)
+        public async Task<(bool Success, string ErrorMessage)> AddUserAsync(UserRequest userRequest)
         {
+            // Check if a user with the given username already exists
+            var existingUser = await _userManager.FindByNameAsync(userRequest.UserName);
+            if (existingUser != null)
+            {
+                // User already exists, return false or handle as needed
+                return (false, "User already exists.");
+            }
+
             var newUser = new User
             {
                 UserName = userRequest.UserName,
@@ -52,8 +60,18 @@ namespace ABAC.Services
             };
 
             var result = await _userManager.CreateAsync(newUser, userRequest.Password);
-            return result.Succeeded;
+            if (!result.Succeeded)
+            {
+                // Collect error messages
+                string errorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
+                return (false, errorMessage);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return (true, null);
         }
+
         public async Task<bool> LinkUserToRoleAsync(int userId, int roleId)
         {
             var role = await _context.Roles.FindAsync(roleId);
@@ -81,7 +99,7 @@ namespace ABAC.Services
 
             var role = new IdentityRole<int> { Name = roleRequest.RoleName };
             var result = await _roleManager.CreateAsync(role);
-
+            await _context.SaveChangesAsync();
             return result.Succeeded;
         }
         public async Task<bool> LinkRoleToResourceAsync(int roleId, int resourceId)

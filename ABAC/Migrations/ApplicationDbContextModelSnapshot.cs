@@ -95,6 +95,10 @@ namespace ABAC.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Sensitivity")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -113,6 +117,7 @@ namespace ABAC.Migrations
                             Id = 101,
                             Content = "The data type for this entity is a Document with High sensitivity department IT",
                             Department = "IT",
+                            Owner = "[1]",
                             Sensitivity = "High",
                             Type = "Document"
                         },
@@ -121,6 +126,7 @@ namespace ABAC.Migrations
                             Id = 102,
                             Content = "The data type for this entity is a Server with Medium sensitivity department IT",
                             Department = "IT",
+                            Owner = "[1]",
                             Sensitivity = "Medium",
                             Type = "Server"
                         },
@@ -129,6 +135,7 @@ namespace ABAC.Migrations
                             Id = 103,
                             Content = "The data type for this entity is a Report with low sensitivity department Finance",
                             Department = "Finance",
+                            Owner = "[3]",
                             Sensitivity = "Low",
                             Type = "Report"
                         },
@@ -137,6 +144,7 @@ namespace ABAC.Migrations
                             Id = 104,
                             Content = "The data type for this entity is a Network with High sensitivity department Finance",
                             Department = "Finance",
+                            Owner = "[3,4]",
                             Sensitivity = "High",
                             Type = "Network"
                         },
@@ -145,6 +153,7 @@ namespace ABAC.Migrations
                             Id = 105,
                             Content = "The data type for this entity is a Document with High sensitivity department HR",
                             Department = "HR",
+                            Owner = "[2]",
                             Sensitivity = "High",
                             Type = "Document"
                         },
@@ -153,6 +162,7 @@ namespace ABAC.Migrations
                             Id = 106,
                             Content = "The data type for this entity is a Document with Medium sensitivity department HR",
                             Department = "HR",
+                            Owner = "[2,4]",
                             Sensitivity = "Medium",
                             Type = "Document"
                         });
@@ -289,12 +299,12 @@ namespace ABAC.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "705fddbb-22b4-464f-9a0f-c42fea7848d1",
+                            ConcurrencyStamp = "c7ee2ae0-b40c-49a7-b199-1fe6ca6e8d28",
                             Department = "IT",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEDBPVPTVSGmHGsrg6Q/+Npc9YZlvn5ov+w/1DYiIK6GZwaKSRkA3HxtdU/uKj2tI/w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM9zpaqXK0GGFnW8A19nanIgGSukuT4EII0h2ICGgPz0Palru1n5Gq/uHHXDeV+doQ==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -305,12 +315,12 @@ namespace ABAC.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fbf95702-396c-4ae9-b028-9bbd4b059a97",
+                            ConcurrencyStamp = "1023394b-b32b-4ca7-9577-b95ed169a838",
                             Department = "HR",
                             Email = "john@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEC/ybvD0SJihmT11Pb8xvHQNR82+nR7BGCIZZzvDqshTXQ5bx9CDd8jrDwuGkq0OmQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIc/lUNwHhYDXcuDh+3EWbWvtHNWLKuD5L3RmFpGVf1K6ztuoIAaddmwBt4Vu4Lvmg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -321,12 +331,12 @@ namespace ABAC.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f284ca95-b484-4546-93b8-917ecb705091",
+                            ConcurrencyStamp = "42b19f81-9a79-46eb-81c8-7de53ed192ae",
                             Department = "",
                             Email = "hoanganh@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEK6scobl+p9VV1vT52VnjgJBJvZ2EsGGq3cNFb1/02n7LMe1T40BY+uS84G6bUYtjw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENWZtQXqnkutR6YmY2ldjL5QeSH2zaBIPNJpJ1KQ4PEmgbAp14xmwDL2wjLR+NRAKQ==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,

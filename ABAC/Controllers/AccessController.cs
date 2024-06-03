@@ -219,13 +219,13 @@ namespace ABAC.Controllers
         {
             if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
-                var currentUser = User.Identity.Name;
+                var currentUser = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 var user = _context.Users.FirstOrDefault(u => u.Id == userId);
                 if (user == null)
                 {
                     return NotFound("User not found!!");
                 }
-                var decision = _pdp.Evaluate(user, "lnk-user-role", null);
+                var decision = _pdp.Evaluate(currentUser, "lnk-user-role", null);
                 if (!decision)
                 {
                     return Forbid("Access denied. Not a system administrator.");
@@ -233,7 +233,7 @@ namespace ABAC.Controllers
                 var result = await authService.LinkUserToRoleAsync(userId, roleId);
                 if (result)
                 {
-                    return Ok("Role linked to resource successfully.");
+                    return Ok("User linked to Role successfully.");
                 }
                 return BadRequest("Failed to link role to resource.");
             }
@@ -245,24 +245,24 @@ namespace ABAC.Controllers
         {
             if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
+                var isUserExsist = _context.Users.FirstOrDefault(u => u.UserName == userRequest.UserName);
                 var currentUser = User.Identity.Name;
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 if (user == null)
                 {
                     return NotFound("User not found!!");
                 }
-                var decision = _pdp.Evaluate(user, "user-create", null);
+                var decision = _pdp.Evaluate(user, "create-user", null);
                 if (!decision)
                 {
                     return Forbid("Access denied. Not a system administrator.");
                 }
-
-                var result = await authService.AddUserAsync(userRequest);
+                var (result, errorMessage) = await authService.AddUserAsync(userRequest);
                 if (result)
                 {
-                    return Ok("User added successfully.");
+                    return Ok("User created successfully.");
                 }
-                return BadRequest("Failed to add user.");
+                return BadRequest(errorMessage ?? "Failed to create user.");
             }
             return NotFound("User not found!");
         }

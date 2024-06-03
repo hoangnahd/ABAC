@@ -8,7 +8,7 @@ namespace ABAC.Services
     {
         Task<AuthenticationResult> LoginAsync(ABAC.Models.LoginRequest model);
         Task<bool> EditUserAsync(string username, EditUserRequest editUserRequest);
-        Task<bool> AddUserAsync(UserRequest userRequest);
+        Task<(bool Success, string ErrorMessage)> AddUserAsync(UserRequest userRequest);
         Task<bool> AddRoleAsync(RoleRequest roleRequest);
         Task<bool> LinkRoleToResourceAsync(int roleId, int resourceId);
         Task<bool> LinkUserToRoleAsync(int userId, int roleId);
