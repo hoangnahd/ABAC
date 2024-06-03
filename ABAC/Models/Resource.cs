@@ -10,6 +10,7 @@ namespace ABAC.Models
         public string Sensitivity { get; set; }
         public string Department { get; set; }
         public string Content { get; set; }
+        public List<int> Owner { get; set; }
         
         // Navigation property
         public ICollection<LNK_ROLE_RESOURCES> RoleResources { get; set; }

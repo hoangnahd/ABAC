@@ -34,8 +34,89 @@ namespace ABAC.Policies
                         }
                         return false;
                     }
+                },
+                new Policy
+                {
+                    Action = "write",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return resource.Owner.Contains(user.Id);
+                    }
+                },
+                new Policy
+                {
+                    Action = "read",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return resource.Owner.Contains(user.Id);
+                    }
+                },
+                new Policy
+                {
+                    Action = "read",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.Department == resource.Department && resource.Sensitivity == "Medium";
+                    }
+                },
+                new Policy
+                {
+                    Action = "read",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return resource.Sensitivity == "Low";
+                    }
+                },
+                new Policy
+                {
+                    Action = "read",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.sysAdmin;
+                    }
+                },
+                new Policy
+                {
+                    Action = "create-role",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.sysAdmin;
+                    }
+                },
+                new Policy
+                {
+                    Action = "create-user",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.sysAdmin;
+                    }
+                },
+                new Policy
+                {
+                    Action = "lnk-role-resource",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.sysAdmin;
+                    }
+                },
+                new Policy
+                {
+                    Action = "lnk-user-role",
+                    ResourceType = "Document",
+                    Conditions = (user, resource, context) =>
+                    {
+                        return user.sysAdmin;
+                    }
                 }
-                
+
             };
         }
     }

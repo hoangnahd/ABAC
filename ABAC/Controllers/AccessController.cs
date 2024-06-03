@@ -4,6 +4,7 @@ using ABAC.Data;
 using ABAC.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using System;
 
 namespace ABAC.Controllers
 {
@@ -12,21 +13,20 @@ namespace ABAC.Controllers
     public class AccessController : ControllerBase
     {
         private readonly PolicyDecisionPoint _pdp;
-        private readonly ABAC.Models.Environment _environment;
         private readonly ApplicationDbContext _context;
-
-        public AccessController(PolicyDecisionPoint pdp, ApplicationDbContext context)
+        private readonly IAuthService authService;
+        public AccessController(PolicyDecisionPoint pdp, ApplicationDbContext context, IAuthService _authService)
         {
             _pdp = pdp;
             _context = context;
-            _environment = new ABAC.Models.Environment { Location = "office", Time = "work_hours" }; // Example environment attributes
+            authService = _authService;
         }
 
-        [HttpGet("resource")]
+        [HttpGet("resource/{id}")]
         [Authorize]
-        public IActionResult AccessRequest(string action, int resourceId)
+        public IActionResult GetResource(int id, string action)
         {
-            if(User != null && User.Identity != null)
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
@@ -35,28 +35,75 @@ namespace ABAC.Controllers
                     return NotFound("User not found!!");
                 }
 
-                var resource = _context.Resources.FirstOrDefault(r => r.Id == resourceId);
+                var resource = _context.Resources.FirstOrDefault(r => r.Id == id);
                 if (resource == null)
                 {
                     return NotFound("Resource not found!!");
                 }
-                
+
                 var decision = _pdp.Evaluate(user, action, resource);
-                
+
                 if (!decision)
                 {
                     return Forbid("Access denied");
                 }
-                return Ok(resource.Content);
+
+                if (action.ToLower() == "read")
+                {
+                    return Ok(resource.Content);
+                }
+                else
+                {
+                    return BadRequest("Invalid action specified for GET.");
+                }
             }
-            return NotFound("User not found!");  
+            return NotFound("User not found!");
         }
+
+        [HttpPut("resource/{id}")]
+        [Authorize]
+        public IActionResult UpdateResource(int id, [FromBody] ResourceEditModel resourceEditModel)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+                if (user == null)
+                {
+                    return NotFound("User not found!!");
+                }
+
+                var resource = _context.Resources.FirstOrDefault(r => r.Id == id);
+                if (resource == null)
+                {
+                    return NotFound("Resource not found!!");
+                }
+
+                var decision = _pdp.Evaluate(user, "write", resource);
+
+                if (!decision)
+                {
+                    return Forbid("Access denied");
+                }
+
+                // Update the resource information
+                resource.Type = resourceEditModel.Type;
+                resource.Sensitivity = resourceEditModel.Sensitivity;
+                resource.Content = resourceEditModel.Content;
+
+                _context.SaveChanges();
+
+                return Ok(new { message = "Resource updated successfully!", resource });
+            }
+            return NotFound("User not found!");
+        }
+
         [HttpGet("AccessUserInfo")]
         [Produces("application/json")]
         [Authorize]
         public IActionResult getAccessUserInfo(int userId)
         {
-            if (User != null && User.Identity != null)
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 
@@ -89,7 +136,7 @@ namespace ABAC.Controllers
         [Authorize]
         public IActionResult GetAllUsers()
         {
-            if(User != null && User.Identity != null)
+            if(User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 if (user == null || !user.sysAdmin)
@@ -112,7 +159,112 @@ namespace ABAC.Controllers
                 return Ok(users);
             }
             return NotFound("User not found!");
+        }
+        [HttpPost("add-role")]
+        [Authorize]
+        public async Task<IActionResult> AddRole(RoleRequest roleRequest)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
 
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null)
+                {
+                    return NotFound("User not found!!");
+                }
+                var decision = _pdp.Evaluate(user, "create-role", null);
+                if (!decision)
+                {
+                    return Forbid("Access denied. Not a system administrator.");
+                }
+
+                var result = await authService.AddRoleAsync(roleRequest);
+                if (result)
+                {
+                    return Ok("Role created successfully.");
+                }
+                return BadRequest("Role already exists.");
+            }
+            return NotFound("User not found!");
+        }
+        [HttpPost("link-role-to-resource")]
+        [Authorize]
+        public async Task<IActionResult> LinkRoleToResource(int roleId, int resourceId)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var currentUser = User.Identity.Name;
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null)
+                {
+                    return NotFound("User not found!!");
+                }
+                var decision = _pdp.Evaluate(user, "lnk-role-resource", null);
+                if (!decision)
+                {
+                    return Forbid("Access denied. Not a system administrator.");
+                }
+                var result = await authService.LinkRoleToResourceAsync(roleId, resourceId);
+                if (result)
+                {
+                    return Ok("Role linked to resource successfully.");
+                }
+                return BadRequest("Failed to link role to resource.");
+            }
+            return NotFound("User not found!");
+        }
+        [HttpPost("link-user-to-role")]
+        [Authorize]
+        public async Task<IActionResult> LinkUserToRole(int userId, int roleId)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var currentUser = User.Identity.Name;
+                var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user == null)
+                {
+                    return NotFound("User not found!!");
+                }
+                var decision = _pdp.Evaluate(user, "lnk-user-role", null);
+                if (!decision)
+                {
+                    return Forbid("Access denied. Not a system administrator.");
+                }
+                var result = await authService.LinkUserToRoleAsync(userId, roleId);
+                if (result)
+                {
+                    return Ok("Role linked to resource successfully.");
+                }
+                return BadRequest("Failed to link role to resource.");
+            }
+            return NotFound("User not found!");
+        }
+        [HttpPost("add-user")]
+        [Authorize]
+        public async Task<IActionResult> AddUser(UserRequest userRequest)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var currentUser = User.Identity.Name;
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null)
+                {
+                    return NotFound("User not found!!");
+                }
+                var decision = _pdp.Evaluate(user, "user-create", null);
+                if (!decision)
+                {
+                    return Forbid("Access denied. Not a system administrator.");
+                }
+
+                var result = await authService.AddUserAsync(userRequest);
+                if (result)
+                {
+                    return Ok("User added successfully.");
+                }
+                return BadRequest("Failed to add user.");
+            }
+            return NotFound("User not found!");
         }
     }
 }

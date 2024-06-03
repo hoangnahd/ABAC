@@ -20,13 +20,7 @@ namespace ABAC.Services
         public bool Evaluate(User user, string action, Resource resource)
         {
             // Check if the user has direct permissions for the resource and action
-            if(user.sysAdmin || 
-                resource.Sensitivity == "Low" || 
-                (resource.Sensitivity == "Medium" && 
-                user.Department == resource.Department)
-                )
-                return true;
-
+            
             var policyBasedPermission = _policies
                 .Any(policy => policy.Action == action &&
                                policy.Conditions(user, resource, _context));

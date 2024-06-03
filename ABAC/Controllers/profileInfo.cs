@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ABAC.Data;
 using ABAC.Models;
+using ABAC.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 
@@ -12,21 +13,20 @@ namespace ABAC.Controllers
     public class profileInfo : ControllerBase
     {
         private readonly PolicyDecisionPoint _pdp;
-        private readonly ABAC.Models.Environment _environment;
         private readonly ApplicationDbContext _context;
-
-        public profileInfo(PolicyDecisionPoint pdp, ApplicationDbContext context)
+        private readonly IAuthService authService;
+        public profileInfo(PolicyDecisionPoint pdp, ApplicationDbContext context, IAuthService _authService)
         {
             _pdp = pdp;
             _context = context;
-            _environment = new ABAC.Models.Environment { Location = "office", Time = "work_hours" }; // Example environment attributes
+            authService = _authService;
         }
 
         [HttpGet("profile")]
         [Authorize]
         public IActionResult AccessRequest()
         {
-            if (User != null && User.Identity != null)
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
@@ -44,6 +44,21 @@ namespace ABAC.Controllers
                 };
 
                 return Ok(userResponse);
+            }
+            return NotFound("Unathorized");
+        }
+        [HttpPut("profile-edit")]
+        [Authorize]
+        public async Task<IActionResult> EditUser(EditUserRequest editUserRequest)
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var result = await authService.EditUserAsync(User.Identity.Name, editUserRequest);
+                if (result)
+                {
+                    return Ok("User information updated successfully.");
+                }
+                return NotFound("User not found.");
             }
             return NotFound("Unathorized");
         }
