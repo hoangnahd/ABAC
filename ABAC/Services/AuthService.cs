@@ -130,7 +130,8 @@ namespace ABAC.Services
                 return false;
             }
 
-            user.UserName = editUserRequest.UserName;
+            user.FirstName = editUserRequest.FirstName;
+            user.LastName = editUserRequest.LastName;
             user.Department = editUserRequest.Department;
             user.Email = editUserRequest.Email;
             user.PhoneNumber = editUserRequest.PhoneNumber;

@@ -182,24 +182,4 @@ namespace ABAC_Fe.Controllers
         }
     }
 
-    public class LoginResponse
-    {
-        public Token Token { get; set; }
-    }
-
-    public class Token
-    {
-        public bool Success { get; set; }
-        public string TokenValue { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class ProfileInfo
-    {
-        public int Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public string Department { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-    }
 }

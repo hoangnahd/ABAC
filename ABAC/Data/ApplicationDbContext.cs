@@ -151,6 +151,8 @@ namespace ABAC.Data
             {
                 Id = 1, // Assuming you want to set the Id explicitly
                 UserName = "admin",
+                FirstName = "ad",
+                LastName = "min",
                 Department = "IT",
                 Email = "admin@example.com", // You may want to provide an email address
                 EmailConfirmed = true, // Assuming you want to confirm the email
@@ -166,6 +168,8 @@ namespace ABAC.Data
             {
                 Id = 2,
                 UserName = "quocanh",
+                FirstName = "quoc",
+                LastName = "anh",
                 Department = "HR",
                 Email = "john@example.com",
                 EmailConfirmed = true,
@@ -179,6 +183,8 @@ namespace ABAC.Data
             {
                 Id = 3,
                 UserName = "anhanh",
+                FirstName = "anh",
+                LastName = "anh",
                 Department = "Finance",
                 Email = "anhanh@example.com",
                 EmailConfirmed = true,
@@ -192,6 +198,8 @@ namespace ABAC.Data
             {
                 Id = 4,
                 UserName = "hoanganh",
+                FirstName = "hoang",
+                LastName = "anh",
                 sysAdmin = true,
                 Email = "hoanganh@example.com",
                 EmailConfirmed = true,

@@ -169,9 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\Admin\Permissions\" />
-    <Folder Include="Views\Account\Admin\Roles\" />
-    <Folder Include="Views\Account\Admin\Users\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
