@@ -288,10 +288,57 @@ namespace ABAC_Fe.Controllers
                 return response.IsSuccessStatusCode;
             }
         }
+
+        public ActionResult IT()
+        {
+            return View();
+        }
+
+        public ActionResult HR()
+        {
+            return View();
+        }
+
+        public ActionResult Finance()
+        {
+            return View();
+        }
+        // Action to fetch resource content
+        public async Task<ActionResult> GetResourceContent(int resourceId)
+        {
+            if (Session["AuthToken"] == null)
+            {
+                return Json(new { success = false, message = "Unauthorized" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var token = Session["AuthToken"] as string;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.GetAsync($"http://localhost:5291/api/access/resource/{resourceId}?action=read");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return Json(new { success = true, content }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to fetch content" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+
+
+
         public class ProfileInfo
         {
             public int Id { get; set; }
+            public string UserName { get; set; }
             public string FirstName { get; set; } = string.Empty;
+            public string LastName { get; set; } = string.Empty;
             public string Department { get; set; } = string.Empty;
             public string Email { get; set; } = string.Empty;
             public string PhoneNumber { get; set; } = string.Empty;
