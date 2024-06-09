@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ABAC_Fe.Controllers.AccountController.User>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Users</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+            form label {
+                display: block;
+                margin: 5px 0;
+            }
+
+            form input {
+                margin-bottom: 10px;
+                padding: 5px;
+                width: 100%;
+            }
+
+            form button {
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+
+                form button:hover {
+                    background-color: #45a049;
+                }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>User Name</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Department</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <a href="@Url.Action("AddUser", "Account")">
+            <button>Add User</button>
+        </a>
+        
+    </div>
+</body>
+</html>

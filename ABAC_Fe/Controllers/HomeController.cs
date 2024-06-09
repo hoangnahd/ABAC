@@ -14,16 +14,22 @@ namespace ABAC_Fe.Controllers
     public class HomeController : Controller
     {
         
-
-
         // GET: Home
         public ActionResult Index()
         {
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
         public ActionResult Admin()
         {
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 

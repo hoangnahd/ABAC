@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ABAC_Fe.Models;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ABAC_Fe.Controllers
 {
@@ -15,7 +17,111 @@ namespace ABAC_Fe.Controllers
         {
             return View();
         }
+        public ActionResult Permissions()
+        {
+            return View();
+        }
+        public async Task<ActionResult> Users()
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
 
+            using (var httpClient = new HttpClient())
+            {
+                // Get the token from session
+                var token = Session["AuthToken"] as string;
+
+                // Add authorization token to request headers
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                // Call the API to get profile information
+                var response = await httpClient.GetAsync("http://localhost:5291/api/access/AccessAllUserInfo");
+                response.EnsureSuccessStatusCode();
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var profileInfo = JsonConvert.DeserializeObject<List<User>>(responseBody);
+
+                // Pass the profileInfo to the view
+                return View(profileInfo);
+            }
+
+            
+        }
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddUser(AddNewUser model)
+        {
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                var token = Session["AuthToken"] as string;
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("http://localhost:5291/api/access/add-user", jsonContent);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction("Users");
+            }
+        }
+        public async Task<ActionResult> Roles()
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                // Get the token from session
+                var token = Session["AuthToken"] as string;
+
+                // Add authorization token to request headers
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                // Call the API to get profile information
+                var response = await httpClient.GetAsync("http://localhost:5291/api/access/GetAllRoles");
+                response.EnsureSuccessStatusCode();
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var profileInfo = JsonConvert.DeserializeObject<List<Role>>(responseBody);
+
+                // Pass the profileInfo to the view
+                return View(profileInfo);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddRole(string roleName)
+        {
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                var token = Session["AuthToken"] as string;
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var newRole = new { RoleName = roleName };
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(newRole), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("http://localhost:5291/api/access/add-role", jsonContent);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction("Roles");
+            }
+        }
         [HttpPost]
         public async Task<ActionResult> Login(string username, string password)
         {
@@ -47,6 +153,7 @@ namespace ABAC_Fe.Controllers
             }
         }
 
+        
 
         // Action to display user profile
         public async Task<ActionResult> Profile()
@@ -86,6 +193,7 @@ namespace ABAC_Fe.Controllers
                 }
             }
         }
+        
         // GET: Edit Profile
         public async Task<ActionResult> EditProfile()
         {
@@ -179,6 +287,47 @@ namespace ABAC_Fe.Controllers
 
                 return response.IsSuccessStatusCode;
             }
+        }
+        public class ProfileInfo
+        {
+            public int Id { get; set; }
+            public string FirstName { get; set; } = string.Empty;
+            public string Department { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+            public string PhoneNumber { get; set; } = string.Empty;
+        }
+        public class Role
+        {
+            public string RoleName { get; set; } = string.Empty;
+            public string RoleId { get; set; } = string.Empty;
+        }
+        public class User
+        {
+            public int Id { get; set; }
+            public string UserName { get; set; } = string.Empty;
+            public string Department { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+            public string PhoneNumber { get; set; } = string.Empty;
+        }
+        public class Token
+        {
+            public bool Success { get; set; }
+            public string TokenValue { get; set; }
+            public string Message { get; set; }
+        }
+        public class LoginResponse
+        {
+            public Token Token { get; set; }
+        }
+        public class AddNewUser
+        {
+          public string UserName { get; set; }
+          public string FirstName { get; set; }
+          public string LastName { get; set; }
+          public string Password { get; set; }
+          public string Department { get; set; }
+          public string Email { get; set; }
+          public string PhoneNumber { get; set; }
         }
     }
 

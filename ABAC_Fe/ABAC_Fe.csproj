@@ -157,9 +157,9 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
-    <Content Include="Views\Account\Admin\Permissions.cshtml" />
-    <Content Include="Views\Account\Admin\Roles.cshtml" />
-    <Content Include="Views\Account\Admin\Users.cshtml" />
+    <Content Include="Views\Account\AddUser.cshtml" />
+    <Content Include="Views\Account\Roles.cshtml" />
+    <Content Include="Views\Account\Users.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Account\Admin\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
