@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>Home Page</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .navbar-custom {
+            background-color: #000000; /* Black */
+        }
+
+            .navbar-custom .nav-link, .navbar-custom .navbar-brand {
+                color: #ffffff !important; /* White */
+            }
+
+            .navbar-custom .navbar-toggler-icon {
+                filter: invert(1);
+            }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="collapse navbar-collapse px-5" id="navbarNav">
+            <!-- Adding justify-content-end class here -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Profile">Profile</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Resources
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Account/IT">IT</a>
+                        <a class="dropdown-item" href="/Account/Finance">Finace</a>
+                        <a class="dropdown-item" href="/Account/HR">HR</a>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

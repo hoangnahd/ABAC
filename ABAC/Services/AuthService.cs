@@ -15,10 +15,10 @@ namespace ABAC.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly JwtSettings _jwtSettings;
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly RoleManager<Roles> _roleManager;
         private readonly UserManager<User> _userManager;
 
-        public AuthService(ApplicationDbContext context, JwtSettings jwtSettings, UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
+        public AuthService(ApplicationDbContext context, JwtSettings jwtSettings, UserManager<User> userManager, RoleManager<Roles> roleManager)
         {
             _context = context;
             _jwtSettings = jwtSettings;
@@ -97,7 +97,7 @@ namespace ABAC.Services
                 return false;
             }
 
-            var role = new IdentityRole<int> { Name = roleRequest.RoleName };
+            var role = new Roles { Name = roleRequest.RoleName };
             var result = await _roleManager.CreateAsync(role);
             await _context.SaveChangesAsync();
             return result.Succeeded;
@@ -130,7 +130,8 @@ namespace ABAC.Services
                 return false;
             }
 
-            user.UserName = editUserRequest.UserName;
+            user.FirstName = editUserRequest.FirstName;
+            user.LastName = editUserRequest.LastName;
             user.Department = editUserRequest.Department;
             user.Email = editUserRequest.Email;
             user.PhoneNumber = editUserRequest.PhoneNumber;

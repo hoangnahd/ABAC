@@ -1,0 +1,32 @@
+﻿@model List<ABAC_Fe.Controllers.Resource>
+
+@{
+    ViewBag.Title = "Resources";
+}
+
+<div class="container mt-5">
+    <h2>Resources</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Sensitivity</th>
+                <th>Content</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resource in Model)
+            {
+                <tr>
+                    <td>@resource.Id</td>
+                    <td>@resource.Type</td>
+                    <td>@resource.Sensitivity</td>
+                    <td>@resource.Content</td>
+                    <td>@resource.Department</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

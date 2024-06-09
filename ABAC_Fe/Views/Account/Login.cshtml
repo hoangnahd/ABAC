@@ -1,0 +1,51 @@
+﻿@model ABAC_Fe.Controllers.AccountController.LoginResponse
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Login</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            @Html.Label("Username", new { @class = "control-label" })
+                            @Html.TextBox("username", null, new { @class = "form-control", placeholder = "Enter your username" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Password", new { @class = "control-label" })
+                            @Html.Password("password", null, new { @class = "form-control", placeholder = "Enter your password" })
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                @if (Model.Token.Success)
+                {
+                    <div class="alert alert-success" role="alert">
+                        <strong>Login successful!</strong>Token:
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Login failed!</strong> Error message: @Model.Token.Message
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ABAC.Services;
 using Microsoft.AspNetCore.Identity.Data;
 using ABAC.Models;
+using ABAC.Data;
 
 namespace ABAC.Controllers
 {
@@ -11,10 +12,11 @@ namespace ABAC.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
-
-        public AuthController(IAuthService _authService)
+        private readonly ApplicationDbContext _context;
+        public AuthController(IAuthService _authService, ApplicationDbContext context)
         {
             authService = _authService;
+            _context = context;
         }
 
         [HttpPost("login")]
@@ -27,6 +29,7 @@ namespace ABAC.Controllers
             }
             return Unauthorized();
         }
+        
 
     }
 }

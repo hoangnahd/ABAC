@@ -95,10 +95,6 @@ namespace ABAC.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Sensitivity")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -117,7 +113,6 @@ namespace ABAC.Migrations
                             Id = 101,
                             Content = "The data type for this entity is a Document with High sensitivity department IT",
                             Department = "IT",
-                            Owner = "[1]",
                             Sensitivity = "High",
                             Type = "Document"
                         },
@@ -126,7 +121,6 @@ namespace ABAC.Migrations
                             Id = 102,
                             Content = "The data type for this entity is a Server with Medium sensitivity department IT",
                             Department = "IT",
-                            Owner = "[1]",
                             Sensitivity = "Medium",
                             Type = "Server"
                         },
@@ -135,7 +129,6 @@ namespace ABAC.Migrations
                             Id = 103,
                             Content = "The data type for this entity is a Report with low sensitivity department Finance",
                             Department = "Finance",
-                            Owner = "[3]",
                             Sensitivity = "Low",
                             Type = "Report"
                         },
@@ -144,7 +137,6 @@ namespace ABAC.Migrations
                             Id = 104,
                             Content = "The data type for this entity is a Network with High sensitivity department Finance",
                             Department = "Finance",
-                            Owner = "[3,4]",
                             Sensitivity = "High",
                             Type = "Network"
                         },
@@ -153,7 +145,6 @@ namespace ABAC.Migrations
                             Id = 105,
                             Content = "The data type for this entity is a Document with High sensitivity department HR",
                             Department = "HR",
-                            Owner = "[2]",
                             Sensitivity = "High",
                             Type = "Document"
                         },
@@ -162,7 +153,6 @@ namespace ABAC.Migrations
                             Id = 106,
                             Content = "The data type for this entity is a Document with Medium sensitivity department HR",
                             Department = "HR",
-                            Owner = "[2,4]",
                             Sensitivity = "Medium",
                             Type = "Document"
                         });
@@ -247,6 +237,14 @@ namespace ABAC.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -299,12 +297,14 @@ namespace ABAC.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ec1ed180-7fa8-4aee-b312-9b38bd415cb3",
+                            ConcurrencyStamp = "9ed0b6bc-9445-4b79-b69d-e839a8aac1d1",
                             Department = "IT",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
+                            FirstName = "ad",
+                            LastName = "min",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEC7iZq/G8B9LMdv8BemfGIm/BZAJnWtP9AM1LxZZpgjAYqMWfpQI8AMK3s7sfwVMfg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKdwwX3ZX7sLAUzum7sm1RvT3As7AzcMrWw2gCFuIZ6p/9vsqEf07C6EGDPyRQnmaQ==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -315,12 +315,14 @@ namespace ABAC.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "63800cee-58d4-4a7a-b8ff-b81d8548dc3d",
+                            ConcurrencyStamp = "658bea5b-9bb8-4f6f-b337-27e666e8fb91",
                             Department = "HR",
                             Email = "john@example.com",
                             EmailConfirmed = true,
+                            FirstName = "quoc",
+                            LastName = "anh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEOfY45207AePjKb+ch2mspNAjia055h5hnG23ZCJhrAh6esqwSzqiYN861P48o7g9A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFIlFgQZ73+qoMQ5XLgfLRNa79qAWCgLRAXGLcADLIJplsm9RmcUJoouXPLRNY7mTg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -331,12 +333,14 @@ namespace ABAC.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1533333d-bb12-4148-9274-30642997cc4c",
+                            ConcurrencyStamp = "2c6a5bb3-5468-4bb2-8e06-08cd3c5fbcb5",
                             Department = "",
                             Email = "hoanganh@example.com",
                             EmailConfirmed = true,
+                            FirstName = "hoang",
+                            LastName = "anh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEEQn7oTgdY1nz43k1LIwuP0QFZGcSxdM6uc5byHZmIjiFxOt7fZj4ant7wZLWptI5Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHYqkVNzFmgnO2yN1fx81Td93sxkxa5LVF8poVq3JKHRWA+pKVQkuX4DVEHipVJtQA==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,

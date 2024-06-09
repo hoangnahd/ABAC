@@ -8,6 +8,8 @@ namespace ABAC.Models
     {
         [MaxLength(100)]
         public string Department { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public bool sysAdmin {  get; set; } = false;
 
         // Navigation property

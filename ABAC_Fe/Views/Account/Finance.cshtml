@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Finance</title>
+    <style>
+        /* Thêm một số kiểu cơ bản */
+        .content {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Finance Resources</h1>
+    <div>
+        <button id="btnLow">Low Sensitivity</button>
+        <button id="btnHigh">High Sensitivity</button>
+    </div>
+    <div id="content" class="content"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnLow').click(function () {
+                fetchContent(103); // Resource ID cho độ nhạy thấp
+            });
+
+            $('#btnHigh').click(function () {
+                fetchContent(104); // Resource ID cho độ nhạy cao
+            });
+
+            function fetchContent(resourceId) {
+                $.ajax({
+                    url: '@Url.Action("GetResourceContent", "Account")',
+                    type: 'GET',
+                    data: { resourceId: resourceId },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#content').html(`<p>${response.content}</p>`);
+                        } else {
+                            $('#content').html(`<p>Error: ${response.message}</p>`);
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Lỗi khi lấy nội dung:', error);
+                        $('#content').html('<p>Lỗi khi lấy nội dung. Vui lòng thử lại.</p>');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

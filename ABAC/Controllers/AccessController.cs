@@ -123,7 +123,34 @@ namespace ABAC.Controllers
             }
             return NotFound("User not found!");
         }
+        [HttpGet("GetAllRoles")]
+        [Produces("application/json")]
+        [Authorize]
+        public IActionResult GetAllRoles()
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null || !user.sysAdmin)
+                {
+                    return NotFound("Unauthorized");
+                }
+                var roles = _context.Roles.Select(role => new RoleResponse
+                {
+                    RoleName = role.Name,
+                    RoleId = role.Id.ToString(),
+                }).ToList();
+                if (roles == null)
+                {
+                    NotFound("User not found!");
+                }
+
+                return Ok(roles);
+            }
+            return NotFound("User not found!");
+        }
         [HttpPost("add-role")]
+        [Produces("application/json")]
         [Authorize]
         public async Task<IActionResult> AddRole(RoleRequest roleRequest)
         {
@@ -229,5 +256,25 @@ namespace ABAC.Controllers
             }
             return NotFound("User not found!");
         }
+        [HttpPost("isSysAdmin")]
+        [Authorize]
+        public async Task<IActionResult> IsSysAdmin()
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null)
+                {
+                    return BadRequest("User not found");
+                }
+                if (user.sysAdmin)
+                {
+                    return Ok("true");
+                }
+            }
+
+            return Unauthorized();
+        }
     }
 }
+
