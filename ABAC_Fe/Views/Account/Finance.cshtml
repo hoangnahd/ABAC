@@ -42,7 +42,7 @@
                         if (response.success) {
                             $('#content').html(`<p>${response.content}</p>`);
                         } else {
-                            $('#content').html(`<p>Lỗi: ${response.message}</p>`);
+                            $('#content').html(`<p>Error: ${response.message}</p>`);
                         }
                     },
                     error: function (error) {
