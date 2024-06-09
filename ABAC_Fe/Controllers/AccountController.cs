@@ -86,6 +86,47 @@ namespace ABAC_Fe.Controllers
                 }
             }
         }
+        // GET: Edit Profile
+        public async Task<ActionResult> EditProfile()
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Call the API to get user profile information
+            var profileInfo = await GetProfileInfo();
+
+            // Pass the profileInfo to the view
+            return View(profileInfo);
+        }
+
+        // POST: Edit Profile
+        [HttpPost]
+        public async Task<ActionResult> EditProfile(ProfileInfo model)
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var token = Session["AuthToken"] as string;
+            var success = await UpdateProfileInfo(model, token);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Profile updated successfully.";
+                return RedirectToAction("Profile");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Failed to update profile");
+                return View(model);
+            }
+        }
+
         private async Task<LoginResponse> LoginAsync(string username, string password)
         {
             using (var httpClient = new HttpClient())
@@ -124,5 +165,41 @@ namespace ABAC_Fe.Controllers
                 return profileInfo;
             }
         }
+
+        private async Task<bool> UpdateProfileInfo(ProfileInfo profileInfo, string token)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                // Add authorization token to request headers
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var content = new StringContent(JsonConvert.SerializeObject(profileInfo), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PutAsync("http://localhost:5291/api/profileInfo/profile-edit", content);
+
+                return response.IsSuccessStatusCode;
+            }
+        }
+    }
+
+    public class LoginResponse
+    {
+        public Token Token { get; set; }
+    }
+
+    public class Token
+    {
+        public bool Success { get; set; }
+        public string TokenValue { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class ProfileInfo
+    {
+        public int Id { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }
