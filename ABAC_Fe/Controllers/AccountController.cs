@@ -18,22 +18,18 @@ namespace ABAC_Fe.Controllers
         public async Task<ActionResult> Login(string username, string password)
         {
             var loginResponse = await LoginAsync(username, password);
-            if (loginResponse.Token != null && loginResponse.Token.Success && username.ToLower() == "admin")
+            if (loginResponse.Token != null && loginResponse.Token.Success && username.ToLower() == "hoanganh")
             {
-                // If login is successful, save the token to session and redirect to Profile action
+                // If login is successful, save the token to session and redirect to Admin action
                 Session["AuthToken"] = loginResponse.Token.TokenValue;
-                Console.WriteLine(Session["AuthToken"]);
                 return RedirectToAction("Admin", "Home");
             }
-
-
             else if (loginResponse.Token != null && loginResponse.Token.Success)
             {
-                // If login is successful, save the token to session and redirect to Profile action
+                // If login is successful, save the token to session and redirect to Index action
                 Session["AuthToken"] = loginResponse.Token.TokenValue;
-                Console.WriteLine(Session["AuthToken"]);
                 return RedirectToAction("Index", "Home");
-            }          
+            }
             else
             {
                 // If login fails, return the view with the login response model
@@ -56,6 +52,47 @@ namespace ABAC_Fe.Controllers
 
             // Pass the profileInfo to the view
             return View(profileInfo);
+        }
+
+        // GET: Edit Profile
+        public async Task<ActionResult> EditProfile()
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Call the API to get user profile information
+            var profileInfo = await GetProfileInfo();
+
+            // Pass the profileInfo to the view
+            return View(profileInfo);
+        }
+
+        // POST: Edit Profile
+        [HttpPost]
+        public async Task<ActionResult> EditProfile(ProfileInfo model)
+        {
+            // Check if user is authenticated
+            if (Session["AuthToken"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var token = Session["AuthToken"] as string;
+            var success = await UpdateProfileInfo(model, token);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Profile updated successfully.";
+                return RedirectToAction("Profile");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Failed to update profile");
+                return View(model);
+            }
         }
 
         private async Task<LoginResponse> LoginAsync(string username, string password)
@@ -94,6 +131,21 @@ namespace ABAC_Fe.Controllers
                 var profileInfo = JsonConvert.DeserializeObject<ProfileInfo>(responseBody);
 
                 return profileInfo;
+            }
+        }
+
+        private async Task<bool> UpdateProfileInfo(ProfileInfo profileInfo, string token)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                // Add authorization token to request headers
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var content = new StringContent(JsonConvert.SerializeObject(profileInfo), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PutAsync("http://localhost:5291/api/profileInfo/profile-edit", content);
+
+                return response.IsSuccessStatusCode;
             }
         }
     }
