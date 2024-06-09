@@ -38,6 +38,8 @@ namespace ABAC.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Department = user.Department,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber
