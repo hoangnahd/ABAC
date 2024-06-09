@@ -244,9 +244,9 @@ namespace ABAC.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Department", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "sysAdmin" },
                 values: new object[,]
                 {
-                    { 1, 0, "c7ee2ae0-b40c-49a7-b199-1fe6ca6e8d28", "IT", "admin@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEM9zpaqXK0GGFnW8A19nanIgGSukuT4EII0h2ICGgPz0Palru1n5Gq/uHHXDeV+doQ==", "1234567890", true, null, false, "admin", false },
-                    { 2, 0, "1023394b-b32b-4ca7-9577-b95ed169a838", "HR", "john@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEIc/lUNwHhYDXcuDh+3EWbWvtHNWLKuD5L3RmFpGVf1K6ztuoIAaddmwBt4Vu4Lvmg==", "1234567890", true, null, false, "quocanh", false },
-                    { 4, 0, "42b19f81-9a79-46eb-81c8-7de53ed192ae", "", "hoanganh@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAENWZtQXqnkutR6YmY2ldjL5QeSH2zaBIPNJpJ1KQ4PEmgbAp14xmwDL2wjLR+NRAKQ==", "1234567890", true, null, false, "hoanganh", true }
+                    { 1, 0, "ec1ed180-7fa8-4aee-b312-9b38bd415cb3", "IT", "admin@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEC7iZq/G8B9LMdv8BemfGIm/BZAJnWtP9AM1LxZZpgjAYqMWfpQI8AMK3s7sfwVMfg==", "1234567890", true, null, false, "admin", false },
+                    { 2, 0, "63800cee-58d4-4a7a-b8ff-b81d8548dc3d", "HR", "john@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEOfY45207AePjKb+ch2mspNAjia055h5hnG23ZCJhrAh6esqwSzqiYN861P48o7g9A==", "1234567890", true, null, false, "quocanh", false },
+                    { 4, 0, "1533333d-bb12-4148-9274-30642997cc4c", "", "hoanganh@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEEQn7oTgdY1nz43k1LIwuP0QFZGcSxdM6uc5byHZmIjiFxOt7fZj4ant7wZLWptI5Q==", "1234567890", true, null, false, "hoanganh", true }
                 });
 
             migrationBuilder.InsertData(

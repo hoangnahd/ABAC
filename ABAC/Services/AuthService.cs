@@ -32,7 +32,7 @@ namespace ABAC.Services
             if (user != null && VerifyPassword(model.Password, user.PasswordHash))
             {
                 var token = GenerateJwtToken(user);
-                return new AuthenticationResult { Success = true, Token = token };
+                return new AuthenticationResult { Success = true, TokenValue = token };
             }
 
             return new AuthenticationResult { Success = false, Message = "Invalid username or password" };

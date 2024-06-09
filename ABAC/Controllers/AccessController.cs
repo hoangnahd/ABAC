@@ -60,43 +60,6 @@ namespace ABAC.Controllers
             return NotFound("User not found!");
         }
 
-        [HttpPut("resource/{id}")]
-        [Authorize]
-        public IActionResult UpdateResource(int id, [FromBody] ResourceEditModel resourceEditModel)
-        {
-            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
-                if (user == null)
-                {
-                    return NotFound("User not found!!");
-                }
-
-                var resource = _context.Resources.FirstOrDefault(r => r.Id == id);
-                if (resource == null)
-                {
-                    return NotFound("Resource not found!!");
-                }
-
-                var decision = _pdp.Evaluate(user, "write", resource);
-
-                if (!decision)
-                {
-                    return Forbid("Access denied");
-                }
-
-                // Update the resource information
-                resource.Type = resourceEditModel.Type;
-                resource.Sensitivity = resourceEditModel.Sensitivity;
-                resource.Content = resourceEditModel.Content;
-
-                _context.SaveChanges();
-
-                return Ok(new { message = "Resource updated successfully!", resource });
-            }
-            return NotFound("User not found!");
-        }
 
         [HttpGet("AccessUserInfo")]
         [Produces("application/json")]

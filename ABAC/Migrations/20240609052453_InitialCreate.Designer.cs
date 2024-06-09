@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ABAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240603164118_InitialCreate")]
+    [Migration("20240609052453_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -302,12 +302,12 @@ namespace ABAC.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c7ee2ae0-b40c-49a7-b199-1fe6ca6e8d28",
+                            ConcurrencyStamp = "ec1ed180-7fa8-4aee-b312-9b38bd415cb3",
                             Department = "IT",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEM9zpaqXK0GGFnW8A19nanIgGSukuT4EII0h2ICGgPz0Palru1n5Gq/uHHXDeV+doQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC7iZq/G8B9LMdv8BemfGIm/BZAJnWtP9AM1LxZZpgjAYqMWfpQI8AMK3s7sfwVMfg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -318,12 +318,12 @@ namespace ABAC.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1023394b-b32b-4ca7-9577-b95ed169a838",
+                            ConcurrencyStamp = "63800cee-58d4-4a7a-b8ff-b81d8548dc3d",
                             Department = "HR",
                             Email = "john@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEIc/lUNwHhYDXcuDh+3EWbWvtHNWLKuD5L3RmFpGVf1K6ztuoIAaddmwBt4Vu4Lvmg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOfY45207AePjKb+ch2mspNAjia055h5hnG23ZCJhrAh6esqwSzqiYN861P48o7g9A==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,
@@ -334,12 +334,12 @@ namespace ABAC.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "42b19f81-9a79-46eb-81c8-7de53ed192ae",
+                            ConcurrencyStamp = "1533333d-bb12-4148-9274-30642997cc4c",
                             Department = "",
                             Email = "hoanganh@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAENWZtQXqnkutR6YmY2ldjL5QeSH2zaBIPNJpJ1KQ4PEmgbAp14xmwDL2wjLR+NRAKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEQn7oTgdY1nz43k1LIwuP0QFZGcSxdM6uc5byHZmIjiFxOt7fZj4ant7wZLWptI5Q==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = true,
                             TwoFactorEnabled = false,

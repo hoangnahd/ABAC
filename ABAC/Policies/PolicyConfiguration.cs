@@ -37,24 +37,6 @@ namespace ABAC.Policies
                 },
                 new Policy
                 {
-                    Action = "write",
-                    ResourceType = "Document",
-                    Conditions = (user, resource, context) =>
-                    {
-                        return resource != null && resource.Owner.Contains(user.Id);
-                    }
-                },
-                new Policy
-                {
-                    Action = "read",
-                    ResourceType = "Document",
-                    Conditions = (user, resource, context) =>
-                    {
-                        return resource != null && resource.Owner.Contains(user.Id);
-                    }
-                },
-                new Policy
-                {
                     Action = "read",
                     ResourceType = "Document",
                     Conditions = (user, resource, context) =>
