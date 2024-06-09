@@ -157,9 +157,13 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
-    <Content Include="Views\Account\Admin\Permissions.cshtml" />
-    <Content Include="Views\Account\Admin\Roles.cshtml" />
-    <Content Include="Views\Account\Admin\Users.cshtml" />
+    <Content Include="Views\Account\Permissions.cshtml" />
+    <Content Include="Views\Account\Roles.cshtml" />
+    <Content Include="Views\Account\Users.cshtml" />
+    <Content Include="Views\Account\Resources.cshtml" />
+    <Content Include="Views\Account\IT.cshtml" />
+    <Content Include="Views\Account\Finance.cshtml" />
+    <Content Include="Views\Account\HR.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

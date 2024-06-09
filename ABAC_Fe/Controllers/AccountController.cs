@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ABAC_Fe.Models;
+using System.Collections.Generic;
 
 namespace ABAC_Fe.Controllers
 {
@@ -47,7 +47,6 @@ namespace ABAC_Fe.Controllers
             }
         }
 
-
         // Action to display user profile
         public async Task<ActionResult> Profile()
         {
@@ -64,6 +63,7 @@ namespace ABAC_Fe.Controllers
             // Pass the profileInfo to the view
             return View(profileInfo);
         }
+
         private async Task<bool> CheckUserSysAdminAsync(string username, string token)
         {
             using (var client = new HttpClient())
@@ -86,6 +86,7 @@ namespace ABAC_Fe.Controllers
                 }
             }
         }
+
         // GET: Edit Profile
         public async Task<ActionResult> EditProfile()
         {
@@ -147,16 +148,16 @@ namespace ABAC_Fe.Controllers
 
         private async Task<ProfileInfo> GetProfileInfo()
         {
-            using (var httpClient = new HttpClient())
+            using (var client = new HttpClient())
             {
                 // Get the token from session
                 var token = Session["AuthToken"] as string;
 
                 // Add authorization token to request headers
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 // Call the API to get profile information
-                var response = await httpClient.GetAsync("http://localhost:5291/api/profileInfo/profile");
+                var response = await client.GetAsync("http://localhost:5291/api/profileInfo/profile");
                 response.EnsureSuccessStatusCode();
 
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -171,7 +172,7 @@ namespace ABAC_Fe.Controllers
             using (var httpClient = new HttpClient())
             {
                 // Add authorization token to request headers
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var content = new StringContent(JsonConvert.SerializeObject(profileInfo), System.Text.Encoding.UTF8, "application/json");
 
@@ -180,6 +181,58 @@ namespace ABAC_Fe.Controllers
                 return response.IsSuccessStatusCode;
             }
         }
+
+        // Action to display the IT page
+        public ActionResult IT()
+        {
+            return View();
+        }
+        
+        public ActionResult HR()
+        {
+            return View();
+        }
+
+        public ActionResult Finance()
+        {
+            return View();
+        }
+        // Action to fetch resource content
+        public async Task<ActionResult> GetResourceContent(int resourceId)
+        {
+            if (Session["AuthToken"] == null)
+            {
+                return Json(new { success = false, message = "Unauthorized" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var token = Session["AuthToken"] as string;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.GetAsync($"http://localhost:5291/api/access/resource/{resourceId}?action=read");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return Json(new { success = true, content }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to fetch content" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+    }
+
+    public class Resource
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+        public string Sensitivity { get; set; }
+        public string Content { get; set; }
+        public string Department { get; set; }
+        public List<int> Owner { get; set; }
     }
 
     public class LoginResponse
