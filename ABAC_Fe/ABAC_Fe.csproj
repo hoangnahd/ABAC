@@ -124,10 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\LoginResponse.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\ProfileInfo.cs" />
-    <Compile Include="Models\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +157,9 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
+    <Content Include="Views\Account\Admin\Permissions.cshtml" />
+    <Content Include="Views\Account\Admin\Roles.cshtml" />
+    <Content Include="Views\Account\Admin\Users.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
