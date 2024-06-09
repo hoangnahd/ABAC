@@ -101,8 +101,7 @@ namespace ABAC.Data
                     Type = "Document", 
                     Sensitivity = "High", 
                     Content= "The data type for this entity is a Document with High sensitivity department IT",
-                    Department="IT",
-                    Owner = [1]
+                    Department="IT"
                 },
                 new Resource 
                 { 
@@ -110,16 +109,14 @@ namespace ABAC.Data
                     Type = "Server", 
                     Sensitivity = "Medium", 
                     Content = "The data type for this entity is a Server with Medium sensitivity department IT",
-                    Department = "IT",
-                    Owner = [1]
+                    Department = "IT"
                 },
                 new Resource 
                 { 
                     Id = 103, Type = "Report", 
                     Sensitivity = "Low", 
                     Content = "The data type for this entity is a Report with low sensitivity department Finance",
-                    Department = "Finance",
-                    Owner = [3]
+                    Department = "Finance"
                 },
                 new Resource 
                 { 
@@ -127,8 +124,7 @@ namespace ABAC.Data
                     Type = "Network", 
                     Sensitivity = "High", 
                     Content = "The data type for this entity is a Network with High sensitivity department Finance",
-                    Department= "Finance",
-                    Owner = [3, 4]
+                    Department= "Finance"
                 },
                 new Resource 
                 { 
@@ -136,8 +132,7 @@ namespace ABAC.Data
                     Type = "Document", 
                     Sensitivity = "High", 
                     Content = "The data type for this entity is a Document with High sensitivity department HR",
-                    Department = "HR",
-                    Owner = [2]
+                    Department = "HR"
                 },
                 new Resource
                 {
@@ -145,8 +140,7 @@ namespace ABAC.Data
                     Type = "Document",
                     Sensitivity = "Medium",
                     Content = "The data type for this entity is a Document with Medium sensitivity department HR",
-                    Department = "HR",
-                    Owner = [2,4]
+                    Department = "HR"
                 }
             );
         }
