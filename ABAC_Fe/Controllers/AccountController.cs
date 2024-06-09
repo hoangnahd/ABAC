@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using ABAC_Fe.Models;
 
 namespace ABAC_Fe.Controllers
 {
@@ -18,28 +20,33 @@ namespace ABAC_Fe.Controllers
         public async Task<ActionResult> Login(string username, string password)
         {
             var loginResponse = await LoginAsync(username, password);
-            if (loginResponse.Token != null && loginResponse.Token.Success && username.ToLower() == "admin")
+
+            if (loginResponse.Token != null && loginResponse.Token.Success)
             {
-                // If login is successful, save the token to session and redirect to Profile action
+                // If login is successful, save the token to session
                 Session["AuthToken"] = loginResponse.Token.TokenValue;
-                Console.WriteLine(Session["AuthToken"]);
-                return RedirectToAction("Admin", "Home");
+
+                // Call an API endpoint to check the user's role
+                var isSysAdmin = await CheckUserSysAdminAsync(username, Session["AuthToken"] as string);
+
+                if (isSysAdmin)
+                {
+                    // Redirect to Admin page if the user is an administrator
+                    return RedirectToAction("Admin", "Home");
+                }
+                else
+                {
+                    // Redirect to Profile page for regular users
+                    return RedirectToAction("Index", "Home");
+                }
             }
-
-
-            else if (loginResponse.Token != null && loginResponse.Token.Success)
-            {
-                // If login is successful, save the token to session and redirect to Profile action
-                Session["AuthToken"] = loginResponse.Token.TokenValue;
-                Console.WriteLine(Session["AuthToken"]);
-                return RedirectToAction("Index", "Home");
-            }          
             else
             {
                 // If login fails, return the view with the login response model
                 return View(loginResponse);
             }
         }
+
 
         // Action to display user profile
         public async Task<ActionResult> Profile()
@@ -57,7 +64,28 @@ namespace ABAC_Fe.Controllers
             // Pass the profileInfo to the view
             return View(profileInfo);
         }
+        private async Task<bool> CheckUserSysAdminAsync(string username, string token)
+        {
+            using (var client = new HttpClient())
+            {
+                // Set up HttpClient with appropriate base address, headers, etc.
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+                // Make a request to an API endpoint to check the user's role
+                var response = await client.PostAsync($"http://localhost:5291/api/access/isSysAdmin", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true; // Assuming the API returns a boolean value indicating sys admin status
+                }
+                else
+                {
+                    // Handle unsuccessful API call
+                    // For example, log the error or return a default value
+                    return false;
+                }
+            }
+        }
         private async Task<LoginResponse> LoginAsync(string username, string password)
         {
             using (var httpClient = new HttpClient())
@@ -96,26 +124,5 @@ namespace ABAC_Fe.Controllers
                 return profileInfo;
             }
         }
-    }
-
-    public class LoginResponse
-    {
-        public Token Token { get; set; }
-    }
-
-    public class Token
-    {
-        public bool Success { get; set; }
-        public string TokenValue { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class ProfileInfo
-    {
-        public int Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public string Department { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
     }
 }
