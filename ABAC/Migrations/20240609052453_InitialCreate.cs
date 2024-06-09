@@ -35,8 +35,6 @@ namespace ABAC.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Department = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
                     sysAdmin = table.Column<bool>(type: "INTEGER", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -67,7 +65,8 @@ namespace ABAC.Migrations
                     Type = table.Column<string>(type: "TEXT", nullable: false),
                     Sensitivity = table.Column<string>(type: "TEXT", nullable: false),
                     Department = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false)
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Owner = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,25 +241,25 @@ namespace ABAC.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Department", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "sysAdmin" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Department", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "sysAdmin" },
                 values: new object[,]
                 {
-                    { 1, 0, "9ed0b6bc-9445-4b79-b69d-e839a8aac1d1", "IT", "admin@example.com", true, "ad", "min", false, null, null, null, "AQAAAAIAAYagAAAAEKdwwX3ZX7sLAUzum7sm1RvT3As7AzcMrWw2gCFuIZ6p/9vsqEf07C6EGDPyRQnmaQ==", "1234567890", true, null, false, "admin", false },
-                    { 2, 0, "658bea5b-9bb8-4f6f-b337-27e666e8fb91", "HR", "john@example.com", true, "quoc", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEFIlFgQZ73+qoMQ5XLgfLRNa79qAWCgLRAXGLcADLIJplsm9RmcUJoouXPLRNY7mTg==", "1234567890", true, null, false, "quocanh", false },
-                    { 4, 0, "2c6a5bb3-5468-4bb2-8e06-08cd3c5fbcb5", "", "hoanganh@example.com", true, "hoang", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEHYqkVNzFmgnO2yN1fx81Td93sxkxa5LVF8poVq3JKHRWA+pKVQkuX4DVEHipVJtQA==", "1234567890", true, null, false, "hoanganh", true }
+                    { 1, 0, "ec1ed180-7fa8-4aee-b312-9b38bd415cb3", "IT", "admin@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEC7iZq/G8B9LMdv8BemfGIm/BZAJnWtP9AM1LxZZpgjAYqMWfpQI8AMK3s7sfwVMfg==", "1234567890", true, null, false, "admin", false },
+                    { 2, 0, "63800cee-58d4-4a7a-b8ff-b81d8548dc3d", "HR", "john@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEOfY45207AePjKb+ch2mspNAjia055h5hnG23ZCJhrAh6esqwSzqiYN861P48o7g9A==", "1234567890", true, null, false, "quocanh", false },
+                    { 4, 0, "1533333d-bb12-4148-9274-30642997cc4c", "", "hoanganh@example.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEEQn7oTgdY1nz43k1LIwuP0QFZGcSxdM6uc5byHZmIjiFxOt7fZj4ant7wZLWptI5Q==", "1234567890", true, null, false, "hoanganh", true }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resources",
-                columns: new[] { "Id", "Content", "Department", "Sensitivity", "Type" },
+                columns: new[] { "Id", "Content", "Department", "Owner", "Sensitivity", "Type" },
                 values: new object[,]
                 {
-                    { 101, "The data type for this entity is a Document with High sensitivity department IT", "IT", "High", "Document" },
-                    { 102, "The data type for this entity is a Server with Medium sensitivity department IT", "IT", "Medium", "Server" },
-                    { 103, "The data type for this entity is a Report with low sensitivity department Finance", "Finance", "Low", "Report" },
-                    { 104, "The data type for this entity is a Network with High sensitivity department Finance", "Finance", "High", "Network" },
-                    { 105, "The data type for this entity is a Document with High sensitivity department HR", "HR", "High", "Document" },
-                    { 106, "The data type for this entity is a Document with Medium sensitivity department HR", "HR", "Medium", "Document" }
+                    { 101, "The data type for this entity is a Document with High sensitivity department IT", "IT", "[1]", "High", "Document" },
+                    { 102, "The data type for this entity is a Server with Medium sensitivity department IT", "IT", "[1]", "Medium", "Server" },
+                    { 103, "The data type for this entity is a Report with low sensitivity department Finance", "Finance", "[3]", "Low", "Report" },
+                    { 104, "The data type for this entity is a Network with High sensitivity department Finance", "Finance", "[3,4]", "High", "Network" },
+                    { 105, "The data type for this entity is a Document with High sensitivity department HR", "HR", "[2]", "High", "Document" },
+                    { 106, "The data type for this entity is a Document with Medium sensitivity department HR", "HR", "[2,4]", "Medium", "Document" }
                 });
 
             migrationBuilder.InsertData(
