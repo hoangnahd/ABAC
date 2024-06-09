@@ -5,22 +5,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Finance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance Resources</title>
+
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
     <style>
-        /* Thêm một số kiểu cơ bản */
+        body {
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .content-container {
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-custom {
+            background-color: #0056b3;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            color: white;
+        }
+
+            .btn-custom:hover {
+                background-color: #004494;
+            }
+
         .content {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Finance Resources</h1>
-    <div>
-        <button id="btnLow">Low Sensitivity</button>
-        <button id="btnHigh">High Sensitivity</button>
+    <div class="content-container">
+        <h1>Finance Resources</h1>
+        <div>
+            <button id="btnLow" class="btn btn-custom m-2">Low Sensitivity</button>
+            <button id="btnHigh" class="btn btn-custom m-2">High Sensitivity</button>
+        </div>
+        <div id="content" class="content"></div>
     </div>
-    <div id="content" class="content"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
