@@ -4,48 +4,96 @@
     ViewBag.Title = "Login";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center">Login</h2>
-                </div>
-                <div class="card-body">
-                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-                    {
-                        <div class="form-group">
-                            @Html.Label("Username", new { @class = "control-label" })
-                            @Html.TextBox("username", null, new { @class = "form-control", placeholder = "Enter your username" })
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Password", new { @class = "control-label" })
-                            @Html.Password("password", null, new { @class = "form-control", placeholder = "Enter your password" })
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    @if (Model != null)
-    {
-        <div class="row justify-content-center mt-3">
-            <div class="col-md-6">
-                @if (Model.Token.Success)
-                {
-                    <div class="alert alert-success" role="alert">
-                        <strong>Login successful!</strong>Token:
-                    </div>
-                }
-                else
-                {
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Login failed!</strong> Error message: @Model.Token.Message
-                    </div>
-                }
-            </div>
-        </div>
+<!-- Add Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #007bff;
     }
 
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #0056b3; /* Darker shade for contrast */
+        color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+        .card-header h2 {
+            margin: 0;
+        }
+
+    .form-control {
+        border-radius: 0.25rem;
+    }
+
+    .btn-primary {
+        background-color: #0056b3; /* Matching the darker header color */
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.75rem;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #004494; /* Even darker on hover */
+        }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="login-container">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Login</h2>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        @Html.Label("Username", new { @class = "control-label" })
+                        @Html.TextBox("username", null, new { @class = "form-control", placeholder = "Enter your username" })
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Password", new { @class = "control-label" })
+                        @Html.Password("password", null, new { @class = "form-control", placeholder = "Enter your password" })
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                }
+            </div>
+        </div>
+        @if (Model != null)
+        {
+            if (Model.Token.Success)
+            {
+                <div class="alert alert-success" role="alert">
+                    <strong>Login successful!</strong> Token: @Model.Token.Message
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>Login failed!</strong> Error message: @Model.Token.Message
+                </div>
+            }
+        }
+    </div>
 </div>
+
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
