@@ -45,6 +45,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddScoped<PolicyDecisionPoint>();
 // Configure JWT settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+var secretKey = File.ReadAllText(jwtSettings.SecretPath);
+
 builder.Services.AddSingleton(jwtSettings);
 
 builder.Services.AddAuthentication(options =>
@@ -62,7 +64,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings.Issuer,
         ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
 builder.Services.AddHttpContextAccessor();
