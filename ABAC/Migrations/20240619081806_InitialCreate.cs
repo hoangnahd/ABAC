@@ -245,9 +245,9 @@ namespace ABAC.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Department", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "sysAdmin" },
                 values: new object[,]
                 {
-                    { 1, 0, "9ed0b6bc-9445-4b79-b69d-e839a8aac1d1", "IT", "admin@example.com", true, "ad", "min", false, null, null, null, "AQAAAAIAAYagAAAAEKdwwX3ZX7sLAUzum7sm1RvT3As7AzcMrWw2gCFuIZ6p/9vsqEf07C6EGDPyRQnmaQ==", "1234567890", true, null, false, "admin", false },
-                    { 2, 0, "658bea5b-9bb8-4f6f-b337-27e666e8fb91", "HR", "john@example.com", true, "quoc", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEFIlFgQZ73+qoMQ5XLgfLRNa79qAWCgLRAXGLcADLIJplsm9RmcUJoouXPLRNY7mTg==", "1234567890", true, null, false, "quocanh", false },
-                    { 4, 0, "2c6a5bb3-5468-4bb2-8e06-08cd3c5fbcb5", "", "hoanganh@example.com", true, "hoang", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEHYqkVNzFmgnO2yN1fx81Td93sxkxa5LVF8poVq3JKHRWA+pKVQkuX4DVEHipVJtQA==", "1234567890", true, null, false, "hoanganh", true }
+                    { 1, 0, "665a448f-2d14-462b-8587-9221b17e6993", "IT", "admin@example.com", true, "ad", "min", false, null, null, null, "AQAAAAIAAYagAAAAELQytf7AUO8khqCorRx+3ek2PynGNxjaBRc1mPGADVkHlp/oG2t/md7vH1wlRSM4bw==", "1234567890", true, null, false, "admin", false },
+                    { 2, 0, "3775c581-a561-4ebb-a3c8-448ae19f71f1", "HR", "john@example.com", true, "quoc", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEA6iYRU8Z+saEPGvtw1qDArH0sKcxJpj+Em/aG6k9zc1+EkxGEyHLdQjwZnEYtVk+A==", "1234567890", true, null, false, "quocanh", false },
+                    { 4, 0, "8a6ea3e8-7335-4298-98e0-6d9018bc06bd", "", "hoanganh@example.com", true, "hoang", "anh", false, null, null, null, "AQAAAAIAAYagAAAAEH7c6E/3SFBm65QNnxTkFzQL4C64O3Tm5AXfjc2k6RGgeN5e/nmEW6ew7yYPd1nkgw==", "1234567890", true, null, false, "hoanganh", true }
                 });
 
             migrationBuilder.InsertData(

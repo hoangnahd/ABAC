@@ -71,7 +71,6 @@ namespace ABAC.Services
 
             return (true, null);
         }
-
         public async Task<bool> LinkUserToRoleAsync(int userId, int roleId)
         {
             var role = await _context.Roles.FindAsync(roleId);
@@ -152,14 +151,34 @@ namespace ABAC.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var secretKey = File.ReadAllText(_jwtSettings.SecretPath);
             var key = Encoding.UTF8.GetBytes(secretKey);
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("department", user.Department),
+                new Claim("firstName", user.FirstName),
+                new Claim("lastName", user.LastName),
+                new Claim("sysAdmin", user.sysAdmin.ToString()),
+                new Claim("email", user.Email.ToString()),
+                new Claim("phone", user.PhoneNumber.ToString()),
+                new Claim("phoneNumberConfirmed", user.PhoneNumberConfirmed.ToString()),
+            };
+
+            // Add roles as claims if there are any
+            if (user.UserRoles != null)
+            {
+                foreach (var role in user.UserRoles)
+                {
+                    if(role.Role.Name != null)
+                        claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+                }
+            }
+            
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,
