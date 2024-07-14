@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ABAC_Fe.Models
 {
-    public class LoginResponse
+    public class Role
     {
-        public Token Token { get; set; }
+        public string RoleName { get; set; } = string.Empty;
+        public string RoleId { get; set; } = string.Empty;
     }
 }

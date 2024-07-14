@@ -29,7 +29,24 @@ namespace ABAC.Controllers
             }
             return Unauthorized();
         }
-        
+        [HttpPost("isSysAdmin")]
+        [Authorize]
+        public async Task<IActionResult> IsSysAdmin()
+        {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                if (user.sysAdmin)
+                {
+                    return Ok("true");
+                }
+            }
+            return Unauthorized();
+        }
 
     }
 }

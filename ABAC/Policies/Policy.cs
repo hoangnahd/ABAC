@@ -7,6 +7,4 @@ public class Policy
     public string Action { get; set; } = string.Empty; // Action the policy applies to (e.g., "read", "write")
     public string ResourceType { get; set; } = string.Empty; // Type of resource the policy applies to (e.g., "file", "document")
     public Func<User, Resource, ApplicationDbContext, bool> Conditions { get; set; } // Function to evaluate conditions
-
-    // Additional properties as needed
 }

@@ -98,7 +98,6 @@ namespace ABAC.Policies
                         return user.sysAdmin;
                     }
                 }
-
             };
         }
     }

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ABAC_Fe.Models;
+using static ABAC_Fe.Controllers.AccountController;
 using System.Text;
 
 namespace ABAC_Fe.Controllers
@@ -27,9 +28,9 @@ namespace ABAC_Fe.Controllers
         public ActionResult Admin()
         {
             if (Session["AuthToken"] == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
+            if (!isSysAdmin)
+                return RedirectToAction("Index", "Home");
             return View();
         }
 

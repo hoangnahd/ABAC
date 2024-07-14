@@ -5,6 +5,7 @@ using ABAC.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace ABAC.Controllers
 {
@@ -64,24 +65,27 @@ namespace ABAC.Controllers
         [HttpGet("AccessUserInfo")]
         [Produces("application/json")]
         [Authorize]
-        public IActionResult getAccessUserInfo(int userId)
+        public UserResponse getAccessUserInfo(int userId)
         {
+            UserResponse userResponse = null;
             if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 
                 if (user == null || !user.sysAdmin)
                 {
-                    return NotFound("Unauthorized");
+                    NotFound("Unauthorized");
+                    return null;
                 }
 
                 var getUser = _context.Users.FirstOrDefault(u => u.Id == userId);
                 if (getUser == null)
                 {
-                    return NotFound("User not found!!");
+                    NotFound("User not found!!");
+                    return null;
                 }
 
-                var userResponse = new userReponse
+                userResponse = new UserResponse
                 {
                     Id = user.Id,
                     UserName = getUser.UserName,
@@ -89,24 +93,24 @@ namespace ABAC.Controllers
                     Email = getUser.Email,
                     PhoneNumber = getUser.PhoneNumber
                 };
-
-                return Ok(userResponse);
             }
-            return NotFound("User not found!");
+            return userResponse;
         }
         [HttpGet("AccessAllUserInfo")]
         [Produces("application/json")]
         [Authorize]
-        public IActionResult GetAllUsers()
+        public List<UserResponse> GetAllUsers()
         {
-            if(User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            List<UserResponse> users = null;
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 if (user == null || !user.sysAdmin)
                 {
-                    return NotFound("Unauthorized");
+                    NotFound("Unauthorized");
+                    return null;
                 }
-                var users = _context.Users.Select(user => new userReponse
+                users = _context.Users.Select(user => new UserResponse
                 {
                     Id = user.Id,
                     UserName = user.UserName,
@@ -115,39 +119,36 @@ namespace ABAC.Controllers
                     PhoneNumber = user.PhoneNumber
                 }).ToList();
                 if(users == null)
-                {
                     NotFound("User not found!");
-                }
-
-                return Ok(users);
             }
-            return NotFound("User not found!");
+            return users;
         }
         [HttpGet("GetAllRoles")]
         [Produces("application/json")]
         [Authorize]
-        public IActionResult GetAllRoles()
+        public List<RoleResponse> GetAllRoles()
         {
+            List<RoleResponse> roles = null;
+
             if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 if (user == null || !user.sysAdmin)
                 {
-                    return NotFound("Unauthorized");
+                    Unauthorized();
+                    return null;
                 }
-                var roles = _context.Roles.Select(role => new RoleResponse
+                
+                roles = _context.Roles.Select(role => new RoleResponse
                 {
                     RoleName = role.Name,
                     RoleId = role.Id.ToString(),
                 }).ToList();
-                if (roles == null)
-                {
-                    NotFound("User not found!");
-                }
 
-                return Ok(roles);
+                if (roles == null)
+                    NotFound("User not found!");
             }
-            return NotFound("User not found!");
+            return roles;
         }
         [HttpPost("add-role")]
         [Produces("application/json")]
@@ -256,25 +257,7 @@ namespace ABAC.Controllers
             }
             return NotFound("User not found!");
         }
-        [HttpPost("isSysAdmin")]
-        [Authorize]
-        public async Task<IActionResult> IsSysAdmin()
-        {
-            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                if (user == null)
-                {
-                    return BadRequest("User not found");
-                }
-                if (user.sysAdmin)
-                {
-                    return Ok("true");
-                }
-            }
-
-            return Unauthorized();
-        }
+        
     }
 }
 

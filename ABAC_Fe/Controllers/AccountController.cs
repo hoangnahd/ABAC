@@ -12,12 +12,29 @@ namespace ABAC_Fe.Controllers
 {
     public class AccountController : Controller
     {
+        public static bool isSysAdmin = false;
         // GET: Account
         public ActionResult Login()
         {
             return View();
         }
         public ActionResult Permissions()
+        {
+            return View();
+        }
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+        public ActionResult IT()
+        {
+            return View();
+        }
+        public ActionResult HR()
+        {
+            return View();
+        }
+        public ActionResult Finance()
         {
             return View();
         }
@@ -49,10 +66,6 @@ namespace ABAC_Fe.Controllers
             }
 
             
-        }
-        public ActionResult AddUser()
-        {
-            return View();
         }
         [HttpPost]
         public async Task<ActionResult> AddUser(AddNewUser model)
@@ -133,7 +146,7 @@ namespace ABAC_Fe.Controllers
                 Session["AuthToken"] = loginResponse.Token.TokenValue;
 
                 // Call an API endpoint to check the user's role
-                var isSysAdmin = await CheckUserSysAdminAsync(username, Session["AuthToken"] as string);
+                isSysAdmin = await CheckUserSysAdminAsync(username, Session["AuthToken"] as string);
 
                 if (isSysAdmin)
                 {
@@ -179,7 +192,7 @@ namespace ABAC_Fe.Controllers
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 // Make a request to an API endpoint to check the user's role
-                var response = await client.PostAsync($"http://localhost:5291/api/access/isSysAdmin", null);
+                var response = await client.PostAsync($"http://localhost:5291/api/Auth/isSysAdmin", null);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -289,20 +302,6 @@ namespace ABAC_Fe.Controllers
             }
         }
 
-        public ActionResult IT()
-        {
-            return View();
-        }
-
-        public ActionResult HR()
-        {
-            return View();
-        }
-
-        public ActionResult Finance()
-        {
-            return View();
-        }
         // Action to fetch resource content
         public async Task<ActionResult> GetResourceContent(int resourceId)
         {
@@ -325,57 +324,13 @@ namespace ABAC_Fe.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to fetch content" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Unathorized" }, JsonRequestBehavior.AllowGet);
                 }
             }
         }
 
-
-
-
-        public class ProfileInfo
-        {
-            public int Id { get; set; }
-            public string UserName { get; set; }
-            public string FirstName { get; set; } = string.Empty;
-            public string LastName { get; set; } = string.Empty;
-            public string Department { get; set; } = string.Empty;
-            public string Email { get; set; } = string.Empty;
-            public string PhoneNumber { get; set; } = string.Empty;
-        }
-        public class Role
-        {
-            public string RoleName { get; set; } = string.Empty;
-            public string RoleId { get; set; } = string.Empty;
-        }
-        public class User
-        {
-            public int Id { get; set; }
-            public string UserName { get; set; } = string.Empty;
-            public string Department { get; set; } = string.Empty;
-            public string Email { get; set; } = string.Empty;
-            public string PhoneNumber { get; set; } = string.Empty;
-        }
-        public class Token
-        {
-            public bool Success { get; set; }
-            public string TokenValue { get; set; }
-            public string Message { get; set; }
-        }
-        public class LoginResponse
-        {
-            public Token Token { get; set; }
-        }
-        public class AddNewUser
-        {
-          public string UserName { get; set; }
-          public string FirstName { get; set; }
-          public string LastName { get; set; }
-          public string Password { get; set; }
-          public string Department { get; set; }
-          public string Email { get; set; }
-          public string PhoneNumber { get; set; }
-        }
+        
+        
     }
 
 }

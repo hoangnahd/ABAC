@@ -91,7 +91,6 @@ namespace ABAC.Data
                 new Roles { Id = 5, Name = "HR_Assistant" }
             );
         }
-
         private void SeedResources(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Resource>().HasData(
@@ -144,7 +143,6 @@ namespace ABAC.Data
                 }
             );
         }
-
         private void SeedAdminUser(ModelBuilder modelBuilder)
         {
             var adminUser = new User

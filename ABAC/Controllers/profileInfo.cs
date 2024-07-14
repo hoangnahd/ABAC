@@ -24,30 +24,31 @@ namespace ABAC.Controllers
 
         [HttpGet("profile")]
         [Authorize]
-        public IActionResult AccessRequest()
+        public UserResponse AccessRequest()
         {
+            UserResponse userResponse = null;
             if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
                 if (user == null)
-                {
-                    return NotFound("User not found!!");
-                }
-                var userResponse = new userReponse
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Department = user.Department,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber
-                };
-
-                return Ok(userResponse);
+                    return null;
+                else
+                    userResponse = new UserResponse
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Department = user.Department,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber
+                    };
             }
-            return NotFound("Unathorized");
+            else
+                return null;
+
+            return userResponse;
         }
         [HttpPut("profile-edit")]
         [Authorize]
