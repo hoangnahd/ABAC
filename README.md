@@ -4,7 +4,7 @@ This project implements JSON Web Token (JWT) and Attribute-Based Access Control 
 - Backend: Contains the backend logic and API implementation.
 - Frontend: Contains the frontend components.
 # API Endpoints
-| Count | URL                                | Method | Descriptions                                                                                      | Access Policy                                                                                     |
+| # | URL                                | Method | Descriptions                                                                                      | Access Policy                                                                                     |
 |-------|------------------------------------|--------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
 | 1     | /api/access/resource/{id}          | GET    | Access details of a specific resource based on its ID.                                            | Owner can access high sensitivity; same department members can access medium or lower; public for low sensitivity.                                            |
 | 2     | /api/access/AccessUserInfo         | GET    | Access information of the current user.                                                            | Admin role can access all user information.                                                      |
